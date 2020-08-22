@@ -4,7 +4,7 @@ import "./post-list-item.css";
 export default class PostListItem extends Component {
 
   render() {
-    const{label, important, like} = this.props
+    const{label, important, like, onDeleted} = this.props
     return (
       <div className="d-flex app-list-item justify-content-between">
         <span className="app-list-item-label">
@@ -17,6 +17,7 @@ export default class PostListItem extends Component {
             <i className="fa fa-star"></i>
           </button>
           <button
+            onClick = {onDeleted}
             type="button"
             className="btn-trash btn-sm">
             <i className="fa fa-trash-o"></i>
