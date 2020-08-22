@@ -2,14 +2,13 @@ import React, { Component } from "react";
 import "./post-list-item.css";
 
 export default class PostListItem extends Component {
+
   render() {
-
-    let classNames = "d-flex app-list-item justify-content-between";
-
+    const{label, important, like} = this.props
     return (
       <div className="d-flex app-list-item justify-content-between">
         <span className="app-list-item-label">
-          Post
+          {label}
         </span>
         <div className="d-flex justify-content-center align-items-center">
           <button
