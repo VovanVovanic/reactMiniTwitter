@@ -36,6 +36,17 @@ export default class App extends Component {
       });
     }
   };
+  onAdded = (text) => {
+      const newItem = this.createItem(text)
+      this.setState(({ postData }) => {
+          return {
+              postData: [
+                  ...postData,
+                  newItem
+              ]
+          }
+      })
+  };
   render() {
     const { postData } = this.state;
     return (
@@ -46,7 +57,7 @@ export default class App extends Component {
           <PostStatusFilter />
         </div>
         <PostList posts={this.state.postData} onDeleted={this.onDeleted} />
-        <PostAddForm />
+        <PostAddForm onAdded={this.onAdded} />
       </div>
     );
   }
