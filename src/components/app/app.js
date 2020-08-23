@@ -13,6 +13,7 @@ export default class App extends Component {
       this.createItem("Could we have some coffee?"),
       this.createItem("Lets play that amazing game altogether!"),
     ],
+    term: ''
   };
 
   createItem(label) {
@@ -45,6 +46,21 @@ export default class App extends Component {
       };
     });
   };
+  onSearch = (term) => {
+    this.setState({
+      term
+    })
+  }
+  searched = (arr, term) => {
+    if (!term) {
+      return arr
+    }
+    return arr.filter((el) => {
+      return el.label.toLowerCase()
+                .indexOf(term.toLowerCase()) > -1
+
+    })
+  }
   onToggleProps = (arr, id, propName, propStatus) => {
     const index = this.getIndex(arr, id);
     const oldItem = arr[index];
@@ -79,16 +95,18 @@ export default class App extends Component {
     });
   };
   render() {
-    const { postData } = this.state;
+    const { postData, term} = this.state;
+    const searchedItems = this.searched(postData, term)
     return (
       <div className="app">
         <AppHeader />
         <div className="d-flex">
-          <SearchPanel />
+          <SearchPanel
+            onSearch={this.onSearch}/>
           <PostStatusFilter />
         </div>
         <PostList
-          posts={this.state.postData}
+          posts={searchedItems}
           onDeleted={this.onDeleted}
           onToggleLike={this.onToggleLike}
           onToggleDisLike={this.onToggleDisLike}
