@@ -13,7 +13,8 @@ export default class App extends Component {
       this.createItem("Could we have some coffee?"),
       this.createItem("Lets play that amazing game altogether!"),
     ],
-    term: ''
+    term: "",
+    filter: "all",
   };
 
   createItem(label) {
@@ -48,26 +49,42 @@ export default class App extends Component {
   };
   onSearch = (term) => {
     this.setState({
-      term
-    })
+      term,
+    });
+  };
+  onFiltered = (filter) => {
+    this.setState({filter})
   }
   searched = (arr, term) => {
     if (!term) {
-      return arr
+      return arr;
     }
     return arr.filter((el) => {
-      return el.label.toLowerCase()
-                .indexOf(term.toLowerCase()) > -1
-
-    })
-  }
+      return el.label.toLowerCase().indexOf(term.toLowerCase()) > -1;
+    });
+  };
+  filtered = (arr, filter) => {
+    switch (filter) {
+      case "like":
+        return arr.filter((el) => el.like);
+        break;
+      case 'dislike':
+        return arr.filter((el) => el.dislike)
+        break;
+      case 'important':
+        return arr.filter((el) => el.important)
+        break;
+      default:
+        return arr
+    }
+  };
   onToggleProps = (arr, id, propName, propStatus) => {
     const index = this.getIndex(arr, id);
     const oldItem = arr[index];
     const newItem = {
       ...oldItem,
       [propName]: !oldItem[propName],
-      [propStatus]: oldItem[propStatus = false]
+      [propStatus]: oldItem[(propStatus = false)],
     };
 
     return [...arr.slice(0, index), newItem, ...arr.slice(index + 1)];
@@ -75,14 +92,14 @@ export default class App extends Component {
   onToggleLike = (id) => {
     this.setState(({ postData }) => {
       return {
-        postData: this.onToggleProps(postData, id, "like", 'dislike'),
+        postData: this.onToggleProps(postData, id, "like", "dislike"),
       };
     });
   };
   onToggleDisLike = (id) => {
     this.setState(({ postData }) => {
       return {
-        postData: this.onToggleProps(postData, id, "dislike", 'like'),
+        postData: this.onToggleProps(postData, id, "dislike", "like"),
       };
     });
   };
@@ -95,18 +112,20 @@ export default class App extends Component {
     });
   };
   render() {
-    const { postData, term} = this.state;
-    const searchedItems = this.searched(postData, term)
+    const { postData, term, filter } = this.state;
+    const searchedItems = this.searched(postData, term);
+    const filteredItems = this.filtered(searchedItems, filter)
     return (
       <div className="app">
         <AppHeader />
         <div className="d-flex">
-          <SearchPanel
-            onSearch={this.onSearch}/>
-          <PostStatusFilter />
+          <SearchPanel onSearch={this.onSearch} />
+          <PostStatusFilter
+            filter={filter}
+            onFiltered={this.onFiltered}/>
         </div>
         <PostList
-          posts={searchedItems}
+          posts={filteredItems}
           onDeleted={this.onDeleted}
           onToggleLike={this.onToggleLike}
           onToggleDisLike={this.onToggleDisLike}

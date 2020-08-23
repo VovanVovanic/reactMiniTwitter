@@ -2,22 +2,27 @@ import React, { Component } from "react";
 import "./post-status-filter.css";
 
 export default class PostStatusFilter extends Component {
+  btns = [
+    { name: "all", label: "All" },
+    { name: "like", label: "Like" },
+    { name: "dislike", label: "Dislike" },
+    { name: "important", label: "Important" },
+  ];
   render() {
-    return (
-      <div className="btn-group">
-        <button type="button" className="btn-info btn ">
-          All
+    const buttons = this.btns.map(({ name, label }) => {
+      const isActive = this.props.filter === name;
+      let clss = isActive ? " btn-info btn " : "btn btn-outline-secondary";
+      return (
+        <button
+          onClick={() => this.props.onFiltered(name)}
+          key={name}
+          type="button"
+          className={clss}
+        >
+          {label}
         </button>
-        <button type="button" className="btn btn-outline-secondary">
-          Like
-        </button>
-        <button type="button" className="btn btn-outline-secondary">
-          Dislike
-        </button>
-        <button type="button" className="btn btn-outline-secondary">
-          Important
-        </button>
-      </div>
-    );
+      );
+    });
+    return <div className="btn-group">{buttons}</div>;
   }
 }
