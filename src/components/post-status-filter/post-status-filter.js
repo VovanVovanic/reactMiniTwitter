@@ -12,6 +12,9 @@ export default class PostStatusFilter extends Component {
           Like
         </button>
         <button type="button" className="btn btn-outline-secondary">
+          Dislike
+        </button>
+        <button type="button" className="btn btn-outline-secondary">
           Important
         </button>
       </div>

@@ -20,6 +20,7 @@ export default class App extends Component {
       label,
       important: false,
       like: false,
+      dislike: false,
       id: (Math.random() * Math.random() * 23123).toFixed(),
     };
   }
@@ -37,15 +38,45 @@ export default class App extends Component {
     }
   };
   onAdded = (text) => {
-      const newItem = this.createItem(text)
-      this.setState(({ postData }) => {
-          return {
-              postData: [
-                  ...postData,
-                  newItem
-              ]
-          }
-      })
+    const newItem = this.createItem(text);
+    this.setState(({ postData }) => {
+      return {
+        postData: [...postData, newItem],
+      };
+    });
+  };
+  onToggleProps = (arr, id, propName, propStatus) => {
+    const index = this.getIndex(arr, id);
+    const oldItem = arr[index];
+    const newItem = {
+      ...oldItem,
+      [propName]: !oldItem[propName],
+      [propStatus]: oldItem[propStatus = false]
+    };
+
+    return [...arr.slice(0, index), newItem, ...arr.slice(index + 1)];
+  };
+  onToggleLike = (id) => {
+    this.setState(({ postData }) => {
+      return {
+        postData: this.onToggleProps(postData, id, "like", 'dislike'),
+      };
+    });
+  };
+  onToggleDisLike = (id) => {
+    this.setState(({ postData }) => {
+      return {
+        postData: this.onToggleProps(postData, id, "dislike", 'like'),
+      };
+    });
+  };
+
+  onToggleImportant = (id) => {
+    this.setState(({ postData }) => {
+      return {
+        postData: this.onToggleProps(postData, id, "important"),
+      };
+    });
   };
   render() {
     const { postData } = this.state;
@@ -56,7 +87,13 @@ export default class App extends Component {
           <SearchPanel />
           <PostStatusFilter />
         </div>
-        <PostList posts={this.state.postData} onDeleted={this.onDeleted} />
+        <PostList
+          posts={this.state.postData}
+          onDeleted={this.onDeleted}
+          onToggleLike={this.onToggleLike}
+          onToggleDisLike={this.onToggleDisLike}
+          onToggleImportant={this.onToggleImportant}
+        />
         <PostAddForm onAdded={this.onAdded} />
       </div>
     );

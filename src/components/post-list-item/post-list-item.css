@@ -31,13 +31,32 @@
     transform: translateX(30px);
     opacity: 0;
 }
+.app-list-item .fa-frown-o {
+    width: 35px;
+    height: 35px;
+    text-align: center;
+    line-height: 35px;
+    font-size: 25px;
+    color: red;
+    transition: 0.3s all;
+    transform: translateX(30px);
+    opacity: 0;
+}
 
 .app-list-item-label {
-    display: block;
+    display: flex;
+    flex-grow: 1;
     line-height: 35px;
     cursor: pointer;
     user-select: none;
     transition: 0.5s all;
+}
+.app-list-item .btn-status {
+    margin-right: 5px;
+    color: rgba(0, 200, 255, 0.7)
+} 
+.app-list-item .btn-status:last-child {
+    margin-right: 5%;
 }
 
 .app-list-item.like .fa-heart {
@@ -51,4 +70,8 @@
 
 .app-list-item.important .btn-star {
     color: #aeaeae;
+}
+.app-list-item.dislike .fa-frown-o {
+    opacity: 1;
+    transform: translateX(-30px);
 }
