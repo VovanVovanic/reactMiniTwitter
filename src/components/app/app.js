@@ -113,11 +113,19 @@ export default class App extends Component {
   };
   render() {
     const { postData, term, filter } = this.state;
+    const like = postData.filter((el) => el.like).length
+    const dislike = postData.filter((el) => el.dislike).length
+    const important = postData.filter((el) => el.important).length;
+    const all = postData.length
     const searchedItems = this.searched(postData, term);
     const filteredItems = this.filtered(searchedItems, filter)
     return (
       <div className="app">
-        <AppHeader />
+        <AppHeader
+          all={all}
+          like={like}
+          dislike={dislike}
+          important={important}/>
         <div className="d-flex">
           <SearchPanel onSearch={this.onSearch} />
           <PostStatusFilter

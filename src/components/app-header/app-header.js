@@ -1,12 +1,14 @@
 import React from 'react'
+import Clock from '../clocks'
 import './app-header.css'
 
-const AppHeader = () => {
+const AppHeader = ({like, dislike, all, important}) => {
   return (
     <div className="app-header d-flex">
-      <h1>Vladimirs Plotnikovs</h1>
+      <h1>Mini Twitter</h1>
+      <Clock />
       <h2>
-        some records total. some liked
+        Total: {all} records. {like} Liked, {dislike} disliked, {important} important
       </h2>
     </div>
   );
